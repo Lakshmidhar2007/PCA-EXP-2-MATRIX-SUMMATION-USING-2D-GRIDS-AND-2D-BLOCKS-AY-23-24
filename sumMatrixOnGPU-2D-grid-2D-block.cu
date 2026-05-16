@@ -143,19 +143,17 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
 }
 
 // grid 2D block 2D
-__global__ void sumMatrixOnGPU2D(float *MatA, float *MatB, float *MatC, int nx,
-                                 int ny)
+__global__ void sumMatrixOnGPU2D(float *A, float *B, float *C, int NX, int NY)
 {
+    unsigned int ix = blockIdx.x * blockDim.x + threadIdx.x;
+    unsigned int iy = blockIdx.y * blockDim.y + threadIdx.y;
 
+    unsigned int idx = iy * NX + ix;
 
-
-
-//Write your code here
-
-
-
-
-
+    if (ix < NX && iy < NY)
+    {
+        C[idx] = A[idx] + B[idx];
+    }
 }
 
 int main(int argc, char **argv)
